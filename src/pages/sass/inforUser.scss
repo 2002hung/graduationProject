@@ -1,0 +1,158 @@
+:root {
+    --primary-color: #ff8a00;
+    --white-color: white;
+    --smoke-color: #999;
+    --text-color: #333;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+::selection {
+    background-color: var(--primary-color);
+    color: var(--white-color);
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    font-family: "Raleway", sans-serif;
+    font-size: 1.6rem;
+    font-weight: 500;
+    line-height: 1.5;
+    text-rendering: optimizeSpeed;
+    color: var(--text-color);
+}
+
+input,
+textarea {
+    outline: none;
+}
+
+a {
+    color: var(--text-color);
+    text-decoration: none;
+}
+
+.wrapp-form {
+    padding: 20px 60px;
+    margin-top: 20px;
+    border-radius: 6px;
+    background-color: var(--white-color);
+    border: 1px solid var(--smoke-color);
+}
+
+
+.user-information {
+    padding: 80px 100px 50px;
+    width: 1200px;
+    margin: 0 auto;
+
+    .form-flex {
+        display: flex;
+    }
+
+    .history-problem-incident {
+        width: 50%;
+    }
+
+    .form-manage {
+
+        .form-wrapp {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .form-information {
+            display: flex;
+            flex-direction: column;
+            margin-top: 20px;
+        }
+
+        .form-input {
+            width: 340px;
+            padding: 8px 16px;
+            margin: 8px 0 4px 0;
+            font-size: 1.6rem;
+            resize: vertical;
+            max-height: 250px;
+        }
+
+        .info-error {
+            font-size: 13px;
+            color: red;
+        }
+
+        .account-manager__form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .account-manager__radio {
+            display: flex;
+            margin: 4px 0 20px;
+        }
+
+        .account-manager__sex {
+            display: flex;
+            align-items: center;
+            margin-right: 50px;
+        }
+
+        .manage-sex__radio {
+            width: 16px;
+            height: 16px;
+            margin-right: 6px;
+        }
+
+        .incident-form-right {
+            width: 50%;
+        }
+    }
+
+    .right-btn {
+        margin-top: 20px;
+    }
+}
+
+
+@media (max-width: 768px) {
+    .user-information {
+        width: 100%;
+        padding: 0;
+    }
+
+    .user-information .form-manage .form-wrapp {
+        display: block;
+    }
+    .user-information .form-manage .form-input,
+    .user-information .form-manage .incident-form-right, 
+    .problem-left__wrapp .form-update .problem-right__form {
+        width: 100%;
+    }
+
+    .problem-left__wrapp .form-update {
+        padding: 0 20px;
+    }
+
+    .problem-left__wrapp .form-update .problem-right__form {
+        padding: 20px;
+    }
+
+    .problem-left__wrapp .form-update .problem-right__form .right-btn {
+        margin-top: 0;
+    }
+
+    .user-information .history-problem-incident {
+        width: 100%;
+        margin-top: 30px;
+    }
+
+    .user-information .form-flex {
+        display: block;
+    }
+}
