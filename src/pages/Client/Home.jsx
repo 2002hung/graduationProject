@@ -9,11 +9,9 @@ import {
     theme,
     Breadcrumb,
     Typography,
-    Image,
     Select,
     message,
     Upload,
-    notification,
     Menu,
     Avatar,
     Radio,
@@ -25,24 +23,13 @@ import { useForm, Controller } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useDispatch, useSelector } from "react-redux";
-import { geocoding, reverseGeocoding } from "../../features/Goong/goongSlice";
-import {
-    addNaturalDisasterVersion1,
-    addNaturalDisasterVersion2,
-    editNaturalDisasterPriority,
-} from "../../features/NaturalDisaster/naturalDisastersSlice";
-import {
-    addProblemVersion1,
-    addProblemVersion2,
-    editProblemPriority,
-} from "../../features/Problems/problemsSlice";
-import { Link, useNavigate } from "react-router-dom";
+import { reverseGeocoding } from "../../features/Goong/goongSlice";
+import { editNaturalDisasterPriority } from "../../features/NaturalDisaster/naturalDisastersSlice";
+import { editProblemPriority } from "../../features/Problems/problemsSlice";
 import goongjs from "@goongmaps/goong-js";
 import { GOONG_MAP_KEY } from "../../constants/constants";
-import { addImage } from "../../features/Uploads/uploadsSlice";
 import axios from "axios";
 import {
-    clearUserInfo,
     getAllRescueNeeded,
     getAllRescueSeeker,
 } from "../../features/Users/usersSlice";
@@ -63,17 +50,11 @@ const schema = yup.object().shape({
         .required("Vui lòng nhập số điện thoại")
         .min(10, "Số điện thoại chỉ được nhập tối thiểu 10 ký tự")
         .max(10, "Số điện thoại chỉ được nhập tối đa 10 ký tự"),
-    // address: yup
-    //   .string()
-    //   .required("Vui lòng nhập địa chỉ")
-    //   .min(5, "Địa chỉ phải có ít nhất 10 ký tự")
-    //   .max(100, "Địa chỉ chỉ được nhập tối đa 100 ký tự"),
 });
 
 const Home = () => {
     // Redux State
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const userInfo = useSelector((state) => state?.user?.userInfo);
     const coordinates = useSelector(
         (state) => state?.user?.userInfo?.coordinates
@@ -111,27 +92,27 @@ const Home = () => {
     // Task 1
     const [isModalOpenEditRescueNeeded, setIsModalOpenEditRescueNeeded] =
         useState(false);
-    const [updatePriority, setUpdatePriority] = useState(false);
     const [emergencyType, setEmergencyType] = useState("");
     const [loading, setLoading] = useState(false);
-    const [successMessage, setSuccessMessage] = useState("");
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
     const [markerPosition, setMarkerPosition] = useState([validLng, validLat]);
     const [hasCoordinates, setHasCoordinates] = useState(!!coordinates);
     const [isLogin] = useState(!!userInfo);
-    const [showMap, setShowMap] = useState(hasCoordinates);
-    const [showDanger, setShowDanger] = useState(true);
     const [urlImage, setUrlImage] = useState("");
     const [valueAddress, setValueAddress] = useState("");
     const [imageUploaded, setImageUploaded] = useState(false);
+    const [selectedItem, setSelectedItem] = useState(null);
+    const [selectedRescueNeeded, setSelectedRescueNeeded] = useState(null);
 
     // New
-    const [selectedItem, setSelectedItem] = useState(null);
-    const [isFirstMarkerClicked, setIsFirstMarkerClicked] = useState(false);
-    const [selectedRescueNeeded, setSelectedRescueNeeded] = useState(null);
-    const [popupIndex, setPopupIndex] = useState(null);
-    const [showDetailRescueNeeded, setShowDetailRescueNeeded] = useState(false);
+    // const [updatePriority, setUpdatePriority] = useState(false);
+    // const [successMessage, setSuccessMessage] = useState("");
+    // const [username, setUsername] = useState("");
+    // const [password, setPassword] = useState("");
+    // const [isFirstMarkerClicked, setIsFirstMarkerClicked] = useState(false);
+    // const [popupIndex, setPopupIndex] = useState(null);
+    // const [showDetailRescueNeeded, setShowDetailRescueNeeded] = useState(false);
+    // const [showMap, setShowMap] = useState(hasCoordinates);
+    // const [showDanger, setShowDanger] = useState(true);
 
     // useEffect add map
     useEffect(() => {
@@ -182,15 +163,6 @@ const Home = () => {
     useEffect(() => {
         dispatch(getAllRescueSeeker());
     }, [dispatch]);
-    // Task 5
-    // useEffect(() => {
-    //   if (userInfo?.role === "ROLE_RESCUER") {
-    //     dispatch(clearUserInfo());
-    //     Cookies.remove("accessToken");
-    //     Cookies.remove("refreshToken");
-    //     navigate("/login");
-    //   }
-    // }, [dispatch, userInfo?.role, navigate]);
 
     // Event Handlers
     // Task 1

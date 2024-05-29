@@ -9,12 +9,26 @@ import "@goongmaps/goong-js/dist/goong-js.css";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { message } from "antd";
-import "../sass/incident.scss";
-import Button from "../Client/Button";
 import { GOONG_MAP_KEY } from "../../constants/constants";
-import { useDispatch } from "react-redux";
-import { reverseGeocoding } from "../../features/Goong/goongSlice";
+import Button from "../Client/Button";
 import { formatDate } from "./HistoryProlem";
+import "../sass/incident.scss";
+
+const isValue = (value) => {
+    return !value || value.trim().length < 2;
+};
+
+const isValidName = (name) => {
+    const regex =
+        /^[a-zA-Z\sàáãạảăắằẳẵặâấầẩẫậèéẽẹẻêềếểễệđìíĩịỉòóõọỏôốồổỗộơớờởỡợùúũụủưứừửữựỳỹỷỵÀÁÃẠẢĂẮẰẲẴẶÂẤẦẨẪẬÈÉẼẸẺÊỀẾỂỄỆĐÌÍĨỊỈÒÓÕỌỎÔỐỒỔỖỘƠỚỜỞỠỢÙÚŨỤỦƯỨỪỬỮỰỲỸỶỴ]+$/;
+    return regex.test(name);
+};
+
+const isValidAddress = (address) => {
+    const regex =
+        /^[a-zA-Z0-9\sàáạãảăắằặẵẳâấầậẫẩèéẹẽẻêếềệễểìíịĩỉòóọõỏôốồộỗổơớờợỡởùúụũủưứừựữửỳýỵỹỷđÀÁẠÃẢĂẮẰẶẴẲÂẤẦẬẪẨÈÉẸẼẺÊẾỀỆỄỂÌÍỊĨỈÒÓỌÕỎÔỐỒỘỖỔƠỚỜỢỠỞÙÚỤŨỦƯỨỪỰỮỬỲÝỴỸỶĐ]*$/;
+    return regex.test(address);
+};
 
 const Incident = () => {
     const accessToken = Cookies.get("accessToken");
@@ -60,22 +74,6 @@ const Incident = () => {
     const [data, setData] = useState([]);
     const [dataRout, setDataRout] = useState([]);
     const [routeError, setRouteError] = useState({});
-
-    const isValue = (value) => {
-        return !value || value.trim().length < 2;
-    };
-
-    const isValidName = (name) => {
-        const regex =
-            /^[a-zA-Z\sàáãạảăắằẳẵặâấầẩẫậèéẽẹẻêềếểễệđìíĩịỉòóõọỏôốồổỗộơớờởỡợùúũụủưứừửữựỳỹỷỵÀÁÃẠẢĂẮẰẲẴẶÂẤẦẨẪẬÈÉẼẸẺÊỀẾỂỄỆĐÌÍĨỊỈÒÓÕỌỎÔỐỒỔỖỘƠỚỜỞỠỢÙÚŨỤỦƯỨỪỬỮỰỲỸỶỴ]+$/;
-        return regex.test(name);
-    };
-
-    const isValidAddress = (address) => {
-        const regex =
-            /^[a-zA-Z0-9\sàáạãảăắằặẵẳâấầậẫẩèéẹẽẻêếềệễểìíịĩỉòóọõỏôốồộỗổơớờợỡởùúụũủưứừựữửỳýỵỹỷđÀÁẠÃẢĂẮẰẶẴẲÂẤẦẬẪẨÈÉẸẼẺÊẾỀỆỄỂÌÍỊĨỈÒÓỌÕỎÔỐỒỘỖỔƠỚỜỢỠỞÙÚỤŨỦƯỨỪỰỮỬỲÝỴỸỶĐ]*$/;
-        return regex.test(address);
-    };
 
     const validateFormRoute = () => {
         const error = {};
@@ -177,40 +175,6 @@ const Incident = () => {
             message.error(
                 "Bạn chưa đăng nhập hoặc chưa điền thông tin vào form"
             );
-        }
-    };
-
-    const dispatch = useDispatch();
-    const [valueAddress, setValueAddress] = useState("");
-
-    const getCurrentPosition = async () => {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                async (position) => {
-                    const latitude = position.coords.latitude;
-                    const longitude = position.coords.longitude;
-
-                    const latlng = `${latitude},%20${longitude}`;
-
-                    console.log("latlng", latlng);
-
-                    try {
-                        const res = await dispatch(reverseGeocoding(latlng));
-                        console.log("res", res.payload.data.results[0].address);
-                        setValueAddress(res.payload.data.results[0].address);
-                    } catch (error) {
-                        console.error(
-                            "Lỗi khi thực hiện reverse geocoding:",
-                            error
-                        );
-                    }
-                },
-                (error) => {
-                    console.error("Lỗi khi lấy vị trí hiện tại:", error);
-                }
-            );
-        } else {
-            console.error("Trình duyệt không hỗ trợ Geolocation");
         }
     };
 

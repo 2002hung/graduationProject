@@ -175,19 +175,6 @@ const HistoryProblemItem = ({
                                 className="form-input"
                             />
                         </div>
-                        {/* <div className="right-form">
-                            <label className="form-title" htmlFor="form-type">
-                                Loại sự cố
-                            </label>
-                            <input
-                                type="text"
-                                name="type"
-                                value={updateData.type}
-                                onChange={handleChange}
-                                id="form-type"
-                                className="form-input"
-                            />
-                        </div> */}
                         <div className="right-form">
                             <label className="form-title" htmlFor="form-type">
                                 Trạng thái
